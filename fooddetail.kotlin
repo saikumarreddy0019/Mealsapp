@@ -1,0 +1,24 @@
+class FoodDetail : AppCompatActivity() {
+    private lateinit var binding: ActivityFoodDetailBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityFoodDetailBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
+        val name = intent.getStringExtra("name")
+
+        val Img = intent.getStringExtra("Img")
+        val des = intent.getStringExtra("des")
+
+        Glide.with(applicationContext).load(Img).into(binding.foodDetImg)
+
+        binding.foodDetName.text = name.toString()
+
+        binding.fooddetDes.text = des.toString()
+
+
+
+
+    }
+}

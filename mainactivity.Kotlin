@@ -1,0 +1,44 @@
+class MainActivity : AppCompatActivity(), OnClick {
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var FoodAdapter:FoodAdapter
+    private lateinit var foodViewModel:FoodViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
+
+        val foodListView = binding.foodListView
+        foodListView.layoutManager = LinearLayoutManager(this)
+        FoodAdapter = FoodAdapter(emptyList(),this,this)
+        foodListView.adapter = FoodAdapter
+
+       foodViewModel  = ViewModelProvider(this)[FoodViewModel::class.java]
+
+        foodViewModel.foodLiveData.observe(this){
+            response ->
+            if (response.isSuccessful){
+                val  recivedData = response.body()?.categories ?: emptyList()
+                FoodAdapter = FoodAdapter(recivedData,this,this)
+                FoodAdapter.notifyDataSetChanged()
+                foodListView.adapter = FoodAdapter
+                binding.progressbar.visibility = View.INVISIBLE
+
+            }
+            else{
+                Toast.makeText(this,"Data not recived",Toast.LENGTH_LONG).show()
+            }
+        }
+
+
+    }
+
+    override fun onClick(foodItem: FoodItem) {
+       val i= Intent(this,FoodDetail::class.java)
+        i.putExtra("name",foodItem.strCategory)
+        i.putExtra("Img",foodItem.strCategoryThumb)
+        i.putExtra("des",foodItem.strCategoryDescription)
+        startActivity(i)
+    }
+}

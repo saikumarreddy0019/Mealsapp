@@ -1,0 +1,33 @@
+class FoodAdapter(private val foodList:List<FoodItem>,private val context: Context,private val onClick: OnClick) : RecyclerView.Adapter<FoodAdapter.viewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
+       val view = FoodLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return viewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
+        val currentPos = foodList[position]
+        holder.name.text = currentPos.strCategory
+        Glide.with(context).load(currentPos.strCategoryThumb).into(holder.img)
+        holder.itemView.setOnClickListener {
+            onClick.onClick(currentPos)
+        }
+
+
+    }
+
+    override fun getItemCount(): Int {
+        return foodList.size
+    }
+
+    inner class viewHolder(binding: FoodLayoutBinding) : RecyclerView.ViewHolder(binding.root){
+        val img = binding.foodImg
+        val name = binding.foodName
+
+    }
+}
+
+
+interface OnClick{
+    fun onClick(foodItem: FoodItem)
+}
