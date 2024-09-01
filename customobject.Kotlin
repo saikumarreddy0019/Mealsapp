@@ -1,0 +1,8 @@
+data class FoodItem(
+    val strCategory : String,
+    val strCategoryThumb :String,
+    val strCategoryDescription : String
+
+)
+
+data class Food(val categories:List<FoodItem>)

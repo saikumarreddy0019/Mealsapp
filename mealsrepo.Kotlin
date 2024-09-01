@@ -1,0 +1,4 @@
+interface FoodService {
+    @GET("categories.php")
+    suspend fun getData() : Response<Food>
+}
